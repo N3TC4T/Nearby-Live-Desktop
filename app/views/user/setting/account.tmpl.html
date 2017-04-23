@@ -1,0 +1,141 @@
+<div class="ui segments">
+  <h5 class="ui top attached block header">
+    <i class="settings icon"></i>
+    <div class="content">
+      Account Settings
+      <div class="sub header">Manage your preferences</div>
+    </div>
+  </h5>
+  <div class="ui padded secondary segment">
+    <div class="ui grid">
+      <div class="three column row">
+        <div class="column">
+          <dl>
+            <dt>Email Address</dt>
+            <dd>
+              <span>{{$root.User.email}}</span></dd>
+          </dl>
+          <button external-link="https://www.wnmlive.com/account/delete" class="btn btn-negative">Deactivate Account</button>
+        </div>
+        <div class="column">
+          <dl>
+            <dt>Membership Level</dt>
+            <dd>
+              <span ng-show="!$root.user.gold" style="color:Gray;">Standard</span>
+              <span ng-show="$root.user.gold" style="color:Gray;">Gold Membership</span>
+            </dd>
+          </dl>
+          <button ng-show="!$root.user.gold" external-link="https://www.wnmlive.com/gold"  id="ContentPlaceHolder1_pageBodyContentPlaceholder_verifyLink" class="btn btn-warning">Gold Membership</button>
+        </div>
+        <div class="column">
+          <dl>
+            <dt>Rank</dt>
+            <dd>
+              <span>#{{_AccountCtrl.UserCurrentPoints.Ranking}}</span></dd>
+          </dl>
+          <button id="points" class="btn btn-default">Points</button>
+          <div class="ui custom popup top left transition hidden">
+            <div class="ui middle aligned animated list">
+              <div class="item">
+                <div class="content">
+                  <div class="header">Available Points <div class="ui left pointing blue basic label">{{_AccountCtrl.UserCurrentPoints.AvailablePoints}}</div> </div>
+                </div>
+              </div>
+              <div class="item">
+                <div class="content">
+                  <div class="header">Lifetime Points <div class="ui left pointing blue basic label">{{_AccountCtrl.UserCurrentPoints.LifetimePoints}}</div> </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui teal segment">
+    <div class="ui top attached tabular menu">
+      <a class="item active" data-tab="change_password"><i class="protect icon"></i>Change Password</a>
+      <a class="item" data-tab="notification_settings"><i class="alarm outline icon"></i>Notifications</a>
+    </div>
+    <div class="ui bottom attached tab segment active" data-tab="change_password">
+      <form class="ui form" ng-init="_AccountCtrl.ChangePasswordForm = {}" ng-submit="_AccountCtrl.ChangePassword()" ng-class="{loading:_AccountCtrl.IsChangingPassword}">
+        <div class="field">
+          <label>Current Password: </label>
+          <input name="currentPassword" ng-model="_AccountCtrl.ChangePasswordForm.currentPassword" type="password">
+        </div>
+        <div class="field">
+          <label>New Password: </label>
+          <input name="newPassword" ng-model="_AccountCtrl.ChangePasswordForm.newPassword" type="password">
+        </div>
+        <div class="field">
+          <label>Confirm Password: </label>
+          <input name="confirmNewPassword" ng-model="_AccountCtrl.ChangePasswordForm.confirmNewPassword" type="password">
+        </div>
+        <button class="btn btn-large btn-primary" type="submit">Save Password</button>
+        <div class="ui error message"></div>
+      </form>
+      <div ng-show="_AccountCtrl.message" class="ui info message">
+        <i class="close icon"></i>
+        <div class="header">
+          Message
+        </div>
+        <p>{{_AccountCtrl.message}}</p>
+      </div>
+    </div>
+    <div class="ui bottom attached tab segment " data-tab="notification_settings">
+      <div class="ui toggle checked checkbox" ng-click="_AccountCtrl.SaveGlobalNotificationSetting()">
+        <input name="notification" type="checkbox">
+        <label>Enable/Disable notification for incoming messages</label>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  $('.ui.form')
+    .form({
+      on: 'submit',
+      fields: {
+        match: {
+          identifier  : 'confirmNewPassword',
+          rules: [
+            {
+              type   : 'match[newPassword]',
+              prompt : 'Please put the same value in both fields'
+            },
+            {
+              type   : 'empty',
+              prompt : 'Please enter your new password confirm'
+            }
+          ]
+        },
+        name: {
+          identifier: 'currentPassword',
+          rules: [
+            {
+              type   : 'empty',
+              prompt : 'Please enter your current password'
+            }
+          ]
+        }
+      }
+    })
+  ;
+  $('.message .close')
+    .on('click', function() {
+      $(this)
+        .closest('.message')
+        .transition('fade')
+      ;
+    })
+  ;
+  $('.menu .item')
+    .tab()
+  ;
+  $('#points')
+    .popup({
+      popup : $('.custom.popup'),
+      on    : 'click'
+    })
+  ;
+</script>

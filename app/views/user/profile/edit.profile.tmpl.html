@@ -1,0 +1,150 @@
+<div class="ui secondary segment">
+    Edit Profile
+    <button ng-click="_ProfileCtrl.EditProfile()" ng-class="{disabled:_ProfileCtrl.IsProfileSaving}" class="btn btn-primary pull-right">Save</button>
+</div>
+<div class="ui basic segment">
+    <div class="ui positive message" ng-show="_ProfileCtrl.SuccessMessage">
+        <i class="close icon" ng-click="_ProfileCtrl.SuccessMessage = false"></i>
+        <div class="header">Success</div>
+        <p>Your profile has been saved.</p>
+    </div>
+    <div class="ui grid">
+        <div class="ui inverted dimmer" ng-class="{active:_ProfileCtrl.IsProfileSaving}">
+            <div class="ui text loader">Saving...</div>
+        </div>
+        <div class="four wide column">
+            <div class="ui vertical fluid tabular menu">
+                <a class="active item" data-tab="basic">Basic Info</a>
+                <a class="item" data-tab="more">More <div class="ui label green">soon</div> </a>
+                <a class="item" data-tab="following">Following</a>
+                <a class="item" data-tab="photo">Photos</a>
+            </div>
+        </div>
+        <div class="twelve wide stretched column">
+            <div class="ui form basic active tab segment" data-tab="basic">
+                <div class="fields">
+                    <div class="field">
+                        <div class="ui circular image">
+                            <div class="ui dimmer">
+                                <div class="content">
+                                    <div class="center">
+                                        <div ng-show="$root.User.profile.img" ng-click="$root.User.profile.img = ''" class="ui small negative button disabled">Remove</div>
+                                        <div class="ui small button disabled">Upload</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <img ng-show="$root.User.profile.img" class="ui small  circular image" src="https://nearby-images.azureedge.net/image/{{$root.User.profile.img}}/190">
+                            <img ng-show="!$root.User.profile.img" class="ui small  circular image" src="https://nearby-images.azureedge.net/image/1/190">
+                        </div>
+                    </div>
+                    <div class=" five wide field" style="margin-top: 40px">
+                        <label>Display Name</label>
+                        <input ng-model="$root.User.profile.name" type="text">
+                    </div>
+                </div>
+                <div class="fields">
+                    <div class=" three wide field">
+                        <label>Age</label>
+                        <input ng-model="$root.User.profile.age" type="number" maxlength="3">
+                    </div>
+                    <div class="field">
+                        <label>Gender</label>
+                        <select ng-model="$root.User.profile.gender" id="gender_dropdown" class="ui dropdown">
+                            <option value="">Gender</option>
+                            <option value="2">Male</option>
+                            <option value="3">Female</option>
+                        </select>
+                    </div>
+                </div>
+                <h4 class="ui dividing header">About You</h4>
+                <div class="field">
+                    <label>Interests</label>
+                    <input ng-model="$root.User.profile.interest" type="text">
+                </div>
+                <div class="field">
+                    <label>Additional Info</label>
+                    <textarea ng-model="$root.User.profile.info" type="text" rows="4"></textarea>
+                </div>
+            </div>
+            <!--<div class="ui form basic  tab segment" data-tab="more">-->
+            <!--</div>-->
+            <div class="ui right attached tab segment" data-tab="following">
+                <perfect-scrollbar class="scroll-wrapper" opts="{suppressScrollX:true}" style="height:calc(100% - 120px);">
+                    <div class="ui one column grid" ng-repeat="fav in $root.User.favs">
+                        <div class="row" style="margin-right: 20px">
+                            <div class="column">
+                                <div class="ui list">
+                                    <div class="item">
+                                        <img ng-show="fav.img" class="ui mini image ava2" src="https://nearby-images.azureedge.net/image/{{fav.img}}/64">
+                                        <img ng-show="!fav.img" class="ui mini image ava2" src="https://nearby-images.azureedge.net/image/1/64">
+                                        <div class="content">
+                                            <a ng-click="$root.ProfileCard(fav.id)" class="header">{{fav.name}}</a>
+                                            {{fav.age }} years old -
+                                            <span ng-switch="fav.gender">
+                                                <span ng-switch-when="1">Unspecified</span>
+                                                <span ng-switch-when="2">Male</span>
+                                                <span ng-switch-when="3">Female</span>
+                                            </span>
+                                        </div>
+                                         <div ng-click="_ProfileCtrl.UnFollowUser(fav)" ng-class="{loading:fav.IsUnfollowing}" class="ui right floated button">Unfollow</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </perfect-scrollbar>
+            </div>
+            <div class="ui right attached tab segment" data-tab="photo">
+                <perfect-scrollbar class="scroll-wrapper" opts="{suppressScrollX:true}" style="height:calc(100% - 120px);">
+                    <div class="ui three doubling cards">
+                        <div class="stackable card" ng-repeat="photo in $root.User.profile.photos" on-finish-render>
+                            <div class="ui dimmer" ng-class="{'active': photo.IsRemoving}">
+                                <div class="ui text loader">Removing</div>
+                            </div>
+                            <div class="image">
+                                <img src="https://nearby-images.azureedge.net/image/{{photo}}/256">
+                            </div>
+                            <div class="extra content" style="padding: 0.50em!important;text-align: center!important;">
+                                <button ng-click="_ProfileCtrl.DeleteAdditionalPhoto($index)" class="ui red mini basic button">remove</button>
+                            </div>
+                        </div>
+                        <div class="ui stackable card" style="background-color: #ebebeb">
+                            <div class="content" style="text-align: center">
+                                <div class="ui dimmer" ng-class="{'active':_ProfileCtrl.IsPostingAdditionalPhoto}">
+                                    <div class="ui indeterminate text loader">Saving File</div>
+                                </div>
+                                <div class="image" ng-show="file">
+                                    <input id="image_input" type="file" file-model="file" accept="image/*" style="display: none;" />
+                                    <img id="image_preview" class="ui fluid image" >
+                                </div>
+                                <div class="extra content" ng-show="file">
+                                    <div class="ui two buttons">
+                                        <div ng-click="_ProfileCtrl.SaveAdditionalPhoto()" class="ui positive button">Save</div>
+                                        <div ng-click="file = ''" class="ui  negative button">Remove</div>
+                                    </div>
+                                </div>
+                                <i class="huge icons" id="image_icon" style="padding-top: 50%" ng-show="!file">
+                                    <i class="photo link icon"></i>
+                                    <i class="corner add icon"></i>
+                                </i>
+                            </div>
+                        </div>
+                    </div>
+                </perfect-scrollbar>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('.tabular.menu .item').tab();
+        $('.ui.dropdown').dropdown();
+        $('.ui.form .image').dimmer({on: 'hover'});
+
+        $('#remove_image').click(function(){
+            $('#image_preview').attr('src', '');
+        });
+    });
+</script>

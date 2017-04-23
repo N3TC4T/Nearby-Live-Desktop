@@ -1,0 +1,49 @@
+<div class="ui top attached block header">
+  Notifications
+</div>
+
+
+<div ng-class="{active: _NotifyCtrl.IsNotificationsLoading}" class="ui inverted dimmer">
+  <div class="ui text loader">Loading ...</div>
+</div>
+
+<perfect-scrollbar class="scroll-wrapper" style="height:calc(100% - 40px);">
+  <ul class="notification-bar">
+    <li ng-class="{'unread':notification.new}" ng-repeat="notification in _NotifyCtrl.SystemNotifications">
+      <span ng-switch="notification.type">
+        <i ng-switch-when="5" class="thumbs outline up icon"></i>
+        <i ng-switch-when="6" class="heart icon"></i>
+        <i ng-switch-when="7" class="empty heart icon"></i>
+        <i ng-switch-when="8" class="unhide icon"></i>
+        <i ng-switch-when="2" class="gift icon"></i>
+        <i ng-switch-default class="alarm outline"></i>
+      </span>
+
+      <div>
+        <p class="txt">
+          {{notification.txt}}
+          <span ng-switch="notification.type">
+            <button ng-switch-when="5" onclick="" ng-click="_NotifyCtrl.OpenPostExternal(notification.param)" class="btn btn-primary pull-right">View Post</button>
+            <button ui-sref="Profile({ pid: notification.param })" ng-switch-when="6" class="btn btn-primary pull-right">View Profile</button>
+            <button ui-sref="Profile({ pid: notification.param })" ng-switch-when="7" class="btn btn-primary pull-right">View Profile</button>
+          </span>
+        </p>
+        <div ng-show="notification.details" class="ui small info message visible">
+          {{notification.details}}
+          <button ng-click="_NotifyCtrl.OpenGoldExternal()"  class="btn btn-warning pull-right">Get Gold</button>
+        </div>
+        <p class="date">{{notification.date|timeAgo}}</p>
+      </div>
+    </li>
+    <div class="center" style="margin-top: 20px">
+      <div ng-click="_NotifyCtrl.LoadMoreSystemNotifications()"  ng-class="{'loading':_NotifyCtrl.IsLoadingMore}" class="ui mini basic icon button">
+        <i class="plus icon"></i> Load More ...
+      </div>
+    </div>
+  </ul>
+
+</perfect-scrollbar>
+
+
+
+

@@ -1,0 +1,50 @@
+<head>
+    <style type="text/css">
+        .window-content {
+            background: url(images/bg.jpg) no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+    </style>
+    <script>
+        const remote = require('electron').remote;
+
+        document.getElementById("min-btn").addEventListener("click", function (e) {
+            var window = remote.getCurrentWindow();
+            window.minimize();
+        });
+
+        document.getElementById("max-btn").addEventListener("click", function (e) {
+            var window = remote.getCurrentWindow();
+            if (!window.isMaximized()) {
+                window.maximize();
+            } else {
+                window.unmaximize();
+            }
+        });
+
+        document.getElementById("close-btn").addEventListener("click", function (e) {
+            var window = remote.getCurrentWindow();
+            window.hide();
+        });
+    </script>
+</head>
+<body>
+<div class="window">
+    <header style="-webkit-app-region:drag;" class="toolbar toolbar-header">
+        <span class="window-buttons">
+            <span id="close-btn" class="entypo-icon icon-record" style="color:#fc605b"></span>
+            <span id="min-btn" class="entypo-icon icon-record" style="color:#fdbc40"></span>
+            <span id="max-btn" class="entypo-icon icon-record" style="color:#34c84a"></span>
+        </span>
+        <h1 class="title">{{ pageTitle }}</h1>
+    </header>
+    <div class="window-content">
+        <div class="ui active dimmer">
+            <div class="ui text loader">Connecting ...</div>
+        </div>
+    </div>
+</div>
+</body>

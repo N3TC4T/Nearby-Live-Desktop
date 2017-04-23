@@ -1,0 +1,184 @@
+<div class="row">
+    <div ng-class="{active: _ConversationCtrl.IsConversationLoad}" class="ui inverted dimmer">
+        <div class="ui text loader">Loading ...</div>
+    </div>
+    <div class="ui dimmer" ng-class="{active: !_ConversationCtrl.conversation}">
+        <div class="content">
+            <div class="center">
+                <h2 class="ui inverted icon header">
+                    <i class="pointing left icon"></i>
+                    Please Selecet a Conversation
+                </h2>
+            </div>
+        </div>
+    </div>
+    <div class="sexteen wide column" ng-show="_ConversationCtrl.conversation">
+        <h5 class="ui top attached block header">
+            <div class="user-bar">
+                <div class="avatar">
+                    <img src="https://nearby-images.azureedge.net/image/{{_ConversationCtrl.conversation.img}}/128" ng-show="_ConversationCtrl.conversation.img">
+                    <img src="https://nearby-images.azureedge.net/image/1/128" ng-show="!_ConversationCtrl.conversation.img">
+                </div>
+                <div class="name">
+                    <a ng-click="$root.ProfileCard(_ConversationCtrl.conversation.id)">{{_ConversationCtrl.conversation.name}}</a>
+                    <span ng-show="!_ConversationCtrl.conversation.notification" ng-click="_ConversationCtrl.EnableNotification(_ConversationCtrl.conversation)" class="entypo-icon icon-mute"></span>
+                    <span ng-show="_ConversationCtrl.conversation.notification" ng-click="_ConversationCtrl.DisableNotification(_ConversationCtrl.conversation)" class="entypo-icon icon-sound gray"></span>
+                    <span class="status">
+                        <span ng-show="_ConversationCtrl.conversation.user_status.IsOnline">
+                            <span onclick="" class="entypo-icon icon-record green"></span>
+                            online
+                        </span>
+                        <span ng-show="!_ConversationCtrl.conversation.user_status.IsOnline">
+                            <span onclick="" class="entypo-icon icon-record red"></span>
+                            offline
+                        </span>
+                    </span>
+                </div>
+                <div class="actions">
+                    <button id="delete_conversation_btn" class="btn btn-negative">Delete</button>
+                </div>
+            </div>
+        </h5>
+        <div class="ui attached segment">
+            <perfect-scrollbar id="chat" class="scroll-wrapper"  style="height:calc(100% - 139px);">
+
+                <div class="center" ng-show="_ConversationCtrl.conversation.messages.length < _ConversationCtrl.conversation.total ">
+                    <div ng-click="_ConversationCtrl.LoadMoreConversation()" ng-class="{'loading':_ConversationCtrl.IsLoadingMore}" class="ui mini basic icon button">
+                        <i class="plus icon"></i> Load more ...
+                    </div>
+                </div>
+
+                <div class='chat-wrapper'>
+                    <div class='chat-message padding' ng-repeat="message in _ConversationCtrl.conversation.messages|orderBy:0:true" on-finish-render>
+                        <div class='chat-message' ng-class="{'chat-message-recipient' : message.dir == 0 , 'chat-message-sender' : message.dir == 1}">
+
+                            <img class='chat-image chat-image-default' src="https://nearby-images.azureedge.net/image/{{_ConversationCtrl.conversation.img}}/128" ng-if="message.dir == 0 && _ConversationCtrl.conversation.img" />
+                            <img class='chat-image chat-image-default' src="https://nearby-images.azureedge.net/image/1/128" ng-if="message.dir == 0 && !_ConversationCtrl.conversation.img" />
+
+                            <img class='chat-image chat-image-default' src="https://nearby-images.azureedge.net/image/{{$root.User.profile.img}}/128" ng-if="message.dir == 1 && $root.User.profile.img" />
+                            <img class='chat-image chat-image-default' src="https://nearby-images.azureedge.net/image/1/128" ng-if="message.dir == 1 && !$root.User.profile.img" />
+
+                            <div class='chat-message-wrapper'>
+                                <div class='chat-message-content'>
+                                    <p ng-class="{'recipient' : message.dir == 0 , 'sender' : message.dir == 1}">
+                                        <span ng-bind-html="message.body | Message"></span>
+                                    </p>
+                                </div>
+
+                                <div class='chat-details'>
+                                    <span class='chat-message-localization font-size-small'>{{message.date | timeAgo }}</span>
+                                    <span class='chat-message-read-status font-size-small' ng-show="message.dir == 1">-
+                                        <span ng-class="{'green':message.status == 'Sent' , 'red':message.status == 'Faild' , 'sky':message.status == 'Sending'}" ng-show="message.status">{{message.status}}</span>
+                                        <span class="green" ng-show="!message.status">Sent</span>
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </perfect-scrollbar>
+        </div>
+        <h5 class="ui button attached block header">
+            <form ng-submit="_ConversationCtrl.ReplyPlainConversation(_ConversationCtrl.conversation);">
+                <div class="form-group">
+                    <div class="ui fluid left icon action input">
+                        <i id="attach_icon" class="attach link icon"></i>
+                        <input ng-model="_ConversationCtrl.reply.body" placeholder="Message" type="text" />
+                    </div>
+                    <input style="display: none;" type="submit" id="submit" value="Submit" />
+                </div>
+            </form>
+        </h5>
+
+    </div>
+</div>
+
+
+<!--Delete Conversation modal-->
+<div class="ui basic delete_chat modal">
+    <div class="content">
+        <div class="confirm">
+            <h1>Confirm your action</h1>
+            <p>Are you sure you wanna delete your conversation with <strong>{{_ConversationCtrl.conversation.name}} ? </strong></p>
+            <button onclick="$('.ui.basic.delete_chat.modal').modal('hide');" autofocus>Cancel</button>
+            <button ng-click="_ConversationCtrl.DeleteConversation(_ConversationCtrl.conversation)" >Confirm</button>
+        </div>
+    </div>
+</div>
+<!--Delete Conversation modal-->
+
+<!--Attach file modal-->
+<div class="ui small attach_file modal">
+    <div class="header">Send File<i onclick="$('.ui.small.attach_file.modal').modal('hide');" class="close link icon pull-right"></i></div>
+    <div class="content">
+        <div class="ui top attached active tab segment" data-tab="image">
+            <div class="ui grid">
+                <div class="row">
+                    <div class="twelve wide column">
+                        <input id="image_input" type="file" file-model="file" accept="image/*" />
+                    </div>
+                    <div class="four wide column">
+                        <button ng-class="{disabled:!file ,loading:_ConversationCtrl.IsUploading}" class="fluid ui button primary" ng-click="_ConversationCtrl.ReplyImageConversation(_ConversationCtrl.conversation);"><i class="send icon"></i>Send</button>
+                    </div>
+                </div>
+                <div class="row" ng-show="file">
+                    <div class="wide column">
+                        <div class="ui dimmer" ng-class="{'active':_ConversationCtrl.IsUploading}">
+                            <div class="ui indeterminate text loader">Preparing File</div>
+                        </div>
+                        <perfect-scrollbar id="chat" class="scroll-wrapper" style="height:150px">
+                            <img class="ui fluid bordered image" id="image_prew" >
+                        </perfect-scrollbar>
+                        <button id="remove_image" ng-click="file = ''" onclick="$('#image_input').val('')" class="ui red mini basic bottom attached button">remove</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui top attached tab segment" data-tab="voice">
+            <p>voice</p>
+        </div>
+        <div class="ui bottoms secondary pointing menu" style="border-bottom:none!important;">
+            <a class="active item" data-tab="image"><i class="camera icon"></i> Image</a>
+            <a class="item disabled" data-tab="voice-"><i class="unmute icon"></i> Voice <span class="ui green disabled label">Soon</span></a>
+        </div>
+    </div>
+</div>
+<!--Attach file modal-->
+
+<script>
+    $('#attach_icon').click(function(){
+        $('.ui.small.attach_file.modal').modal({dimmerSettings:{opacity:0}}).modal('show');
+    });
+    $('#delete_conversation_btn').click(function() {
+        $('.ui.basic.delete_chat.modal').modal({dimmerSettings:{opacity:0.5}}).modal('show');
+    });
+
+    $('#remove_image').click(function(){
+        $('#image_prew').attr('src', '');
+        $("#card_prew").hide();
+    });
+
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#image_prew').attr('src', e.target.result);
+                $("#card_prew").show();
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $("#image_input").change(function(){
+        readURL(this);
+    });
+
+
+
+    $('.menu .item').tab();
+</script>

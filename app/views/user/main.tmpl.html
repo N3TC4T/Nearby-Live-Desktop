@@ -1,0 +1,268 @@
+<script>
+    $('.ui.mini.label.red')
+            .transition('set looping')
+            .transition('pulse', '2000ms')
+    ;
+    const remote = require('electron').remote;
+
+    document.getElementById("min-btn").addEventListener("click", function (e) {
+        var window = remote.getCurrentWindow();
+        window.minimize();
+    });
+
+    document.getElementById("max-btn").addEventListener("click", function (e) {
+        var window = remote.getCurrentWindow();
+        if (!window.isMaximized()) {
+            window.maximize();
+        } else {
+            window.unmaximize();
+        }
+    });
+
+    document.getElementById("close-btn").addEventListener("click", function (e) {
+        var window = remote.getCurrentWindow();
+        window.hide();
+    });
+</script>
+
+<div class="window">
+    <header style="-webkit-app-region:drag;" class="toolbar toolbar-header">
+        <h1 class="title"><!--{{ pageTitle }}-->
+            <span class="window-buttons">
+                <span id="close-btn" class="entypo-icon icon-record" style="color:#fc605b"></span>
+                <span id="min-btn" class="entypo-icon icon-record" style="color:#fdbc40"></span>
+                <span id="max-btn" class="entypo-icon icon-record" style="color:#34c84a"></span>
+            </span>
+        </h1>
+        <div class="toolbar-actions center" style="-webkit-app-region: no-drag;">
+            <!--Stream Section-->
+            <div class="btn-group" ng-show="_MainCtrl.$state.is('Stream');">
+                <button ng-click="$root.PostType = 'Recent' ; $root.GetLastPosts();" ng-class="{active: $root.PostType == 'Recent'}" class="btn btn-default">
+                    <span class="entypo-icon icon-globe"></span>
+                    Recent
+                </button>
+                <button ng-click="$root.PostType= 'Nearby' ; $root.GetLastPosts();" ng-class="{active: $root.PostType== 'Nearby'}" class="btn btn-default">
+                    <i class="entypo-icon icon-location"></i>
+                    Nearby
+                </button>
+                <button ng-click="$root.PostType= 'Following' ; $root.GetLastPosts();" ng-class="{active: $root.PostType== 'Following'}" class="btn btn-default">
+                    <span class="entypo-icon icon-users"></span>
+                    Following
+                </button>
+                <button ng-click="$root.PostType= 'Trending' ; $root.GetLastPosts();" ng-class="{active: $root.PostType== 'Trending'}" class="btn btn-default">
+                    <span class="entypo-icon icon-trophy"></span>
+                    Trending
+                </button>
+            </div>
+            <!--Stream Section-->
+
+            <!--People Section-->
+            <div class="btn-group" ng-show="_MainCtrl.$state.is('People');">
+                <button ng-click="$root.PeopleType = 'Nearby' ; $root.GetPeople();" ng-class="{active: $root.PeopleType == 'Nearby'}" class="btn btn-default">
+                    <i class="entypo-icon icon-location"></i>
+                    Nearby
+                </button>
+                <button ng-click="$root.PeopleType = 'Online' ; $root.GetPeople();" ng-class="{active: $root.PeopleType== 'Online'}" class="btn btn-default">
+                    <i class="entypo-icon icon-cd"></i>
+                    Online
+                </button>
+                <button ng-click="$root.PeopleType = 'Following' ; $root.GetPeople();" ng-class="{active: $root.PeopleType== 'Following'}" class="btn btn-default">
+                    <i class="entypo-icon icon-users"></i>
+                    Following
+                </button>
+            </div>
+            <!--People Section-->
+            <div class="btn-group pull-right">
+                <button class="btn btn-default" ui-sref="Notifications">
+                    <span ng-show="$root.notifications.sm > 0" class="ui mini label red">{{$root.notifications.sm}}</span>
+                    <span class="entypo-icon icon-megaphone"></span>
+                </button>
+                <button class="btn btn-default" ui-sref="Stream" ng-click="$root.PostType = 'Watched';$root.GetLastWatchedPosts()">
+                    <span ng-show="$root.notifications.p > 0" class="ui mini label red">{{$root.notifications.p}}</span>
+                    <span class="entypo-icon icon-eye"></span>
+                </button>
+                <button class="btn btn-default" ui-sref="Message">
+                    <span ng-show="$root.notifications.mc > 0" class="ui mini label red">{{$root.notifications.mc}}</span>
+                    <span class="entypo-icon icon-chat"></span>
+                </button>
+            </div>
+
+            <button class="btn btn-default pull-left" ng-click="_MainCtrl.SideMenuHandler()">
+                <span class="entypo-icon icon-menu"></span>
+            </button>
+        </div>
+
+
+    </header>
+    <div class="window-content">
+        <div class="pane-group">
+
+            <div class="pane pane-sm sidebar" id="side-pane" ng-show="$root.side_menu">
+                <!--Left Profile Section-->
+                <div class="ui basic segment">
+                    <div class="ui small horizontal list">
+                        <div class="item">
+                            <img ng-show="$root.User.profile.img" class="ui tiny image ava2" src="https://nearby-images.azureedge.net/image/{{$root.User.profile.img}}/64">
+                            <img ng-show="!$root.User.profile.img" class="ui tiny image ava2" src="https://nearby-images.azureedge.net/image/1/190">
+                            <div class="content">
+                                <div class="ui header">{{$root.User.profile.name}}</div>
+                                <button ui-sref="Edit_Profile" class="btn btn-mini btn-default active">Edit Profile</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Left Profile Section-->
+                <!--Left Menu Bar-->
+                <nav class="nav-group">
+                    <h5 class="nav-group-title">Menu</h5>
+                    <span ui-sref="Stream" ng-click="$root.PostType = 'Recent' ; $root.GetLastPosts()" class="nav-group-item" ng-class="{'active':_MainCtrl.$state.is('Stream') && $root.PostType != 'Watched'}">
+                        <span class="entypo-icon icon-globe"></span>
+                        World Stream
+                    </span>
+                      <span ui-sref="People" class="nav-group-item" ng-class="{'active':_MainCtrl.$state.is('People')}">
+                        <span class="entypo-icon icon-user"></span>
+                        Nearby People
+                      </span>
+                      <span ui-sref="Message" class="nav-group-item" ng-class="{'active':_MainCtrl.$state.is('Message')}" ng-click="$root.side_menu = false">
+                        <span class="entypo-icon icon-chat"></span>
+                        Messages
+                      </span>
+                      <span ui-sref="Notifications" class="nav-group-item" ng-class="{'active':_MainCtrl.$state.is('Notifications')}">
+                        <span class="entypo-icon icon-megaphone"></span>
+                        Notifications
+                      </span>
+                      <span ui-sref="Stream" ng-click="$root.PostType = 'Watched';$root.GetLastWatchedPosts()" class="nav-group-item" ng-class="{'active':_MainCtrl.$state.is('Stream') && $root.PostType == 'Watched'}">
+                        <span class="entypo-icon icon-eye"></span>
+                        Watched Posts
+                      </span>
+                </nav>
+                <nav class="nav-group">
+                    <h5 class="nav-group-title">Account</h5>
+                    <span ui-sref="Account_Settings" class="nav-group-item" ng-class="{'active':_MainCtrl.$state.is('Account_Settings')}">
+                        <span class="entypo-icon icon-user"></span>
+                        Account & Settings
+                    </span>
+                      <span ui-sref="Privacy_Settings" class="nav-group-item">
+                        <span class="entypo-icon icon-lock"></span>
+                        Privacy Center
+                      </span>
+                      <span ng-click="_MainCtrl.Logout()" class="nav-group-item">
+                        <span class="entypo-icon icon-logout"></span>
+                        Logout
+                      </span>
+
+                </nav>
+                <!--Left Menu Bar-->
+            </div>
+
+            <!--conversations List Pan-->
+            <div class="pane pane-sm sidebar" ng-show="_MainCtrl.$state.is('Message');">
+                <ul class="list-group">
+                    <li class="list-group-header">
+                        <input class="form-control" type="text" ng-model="search" placeholder="Search for someone">
+                    </li>
+                    <perfect-scrollbar class="scroll-wrapper" style="height:calc(100% - 60px);">
+                        <span ng-repeat="conversation in $root.conversations | filter:search">
+                            <li class="list-group-item" ng-class="{active: $root.conversations.active == conversation.id}" ng-click="$root.GetConversationDetail(conversation)">
+                                <img class="img-circle media-object pull-left" src="https://nearby-images.azureedge.net/image/{{conversation.img}}/32" ng-show="conversation.img" width="32" height="32">
+                                <img class="img-circle media-object pull-left" src="https://nearby-images.azureedge.net/image/1/32" ng-show="!conversation.img" width="32" height="32">
+                                <div class="media-body">
+                                    <strong>{{conversation.name}} <span ng-show="conversation.new>0" class="ui teal mini label pull-right">{{conversation.new}}</span> </strong>
+                                    <p>{{conversation.last | timeAgo}}</p>
+                                </div>
+                            </li>
+                        </span>
+                    </perfect-scrollbar>
+                </ul>
+            </div>
+            <!--conversations List Pan-->
+
+            <!--main view panel-->
+            <div class="pane">
+                <div ui-view></div>
+            </div>
+            <!--main view panel-->
+
+        </div>
+    </div>
+
+    <footer class="toolbar toolbar-footer"></footer>
+</div>
+
+
+<!--user profile modal card for view users profile in everywhere-->
+<div class="ui basic small profile_card modal ">
+    <div class="content">
+        <div class="ui secondary top attached small segment">{{$root.UserCard.name}}</div>
+        <div class="ui raised attached segment">
+            <div class="ui inverted dimmer" ng-class="{'active':$root.IsProfileCardLoading}">
+                <div class="ui small text loader">Loading</div>
+            </div>
+            <div class="ui three column grid">
+                <div class="column">
+                    <div class="ui small horizontal list">
+                        <div class="item">
+                            <img ng-show="$root.UserCard.img" class="ui tiny image ava2" src="https://nearby-images.azureedge.net/image/{{$root.UserCard.img}}/64">
+                            <img ng-show="!$root.UserCard.img" class="ui tiny image ava2" src="https://nearby-images.azureedge.net/image/1/64">
+                            <div class="content">
+                                <div class="ui header"><button onclick="$('.ui.basic.small.profile_card.modal').modal('hide');" ui-sref="Profile({ pid: $root.UserCard.id })" class="btn btn-mini btn-default active">View Profile</button></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <dl>
+                        <dt>Distance</dt>
+                        <dd>{{$root.UserCard.dis}}  miles</dd>
+                        <dt>Last Online</dt>
+                        <dd>{{$root.UserCard.last | timeAgo}}</dd>
+                    </dl>
+                </div>
+                <div class="column">
+                    <dl>
+                        <dt>Age</dt>
+                        <dd>{{$root.UserCard.age}} years old</dd>
+                        <dt>Gender</dt>
+                        <dd ng-switch="$root.UserCard.gender">
+                            <span ng-switch-when="1">Unknown</span>
+                            <span ng-switch-when="2">Male</span>
+                            <span ng-switch-when="3">Female</span>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="column row" style="padding-left: 10px;"  ng-show="$root.UserCard.interest">
+                    <div class="ui list">
+                        <div class="item">
+                            <div class="ui horizontal label">Interests</div>
+                            <span class="black"> {{$root.UserCard.interest}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="column row" style="padding-left: 10px;" ng-if="$root.UserCard.badges">
+                    <div class="ui small horizontal list">
+                        <div class="item" ng-repeat="badge in $root.UserCard.badges" on-finish-render>
+                            <img class="ui mini image"  src="https://nearbydata.blob.core.windows.net/badges/{{badge.img}}.png" data-title="{{badge.name}}" data-content="{{badge.desc}}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui secondary bottom attached small segment">
+            <div class="btn-group">
+                <button class="btn btn-default btn-large" ng-click="$root.ProfileCard.Follow()" ng-show="!$root.UserCard.fav">
+                    Follow
+                    <span class="entypo-icon icon-user-add"></span>
+                </button>
+                <button class="btn btn-primary btn-large" ng-click="$root.ProfileCard.UnFollow()" ng-show="$root.UserCard.fav">Unfollow</button>
+                <button class="btn btn-default btn-large" onclick="$('.ui.basic.small.profile_card.modal').modal('hide');" ui-sref="Message({ pid: $root.UserCard.id , img:$root.UserCard.img , name:$root.UserCard.name})">
+                    Message
+                    <span class="entypo-icon icon-chat"></span>
+                </button>
+            </div>
+            <div class="pull-right">
+                <button ng-click="$root.ProfileCard.Block()" class="btn btn-negative btn-large"><span ng-show="!$root.UserCard.blocked">Block</span><span ng-show="$root.UserCard.blocked">Blocked</span></button>
+            </div>
+        </div>
+
+    </div>
+</div>

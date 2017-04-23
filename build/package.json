@@ -1,0 +1,25 @@
+{
+  "name": "nearby",
+  "productName": "NearbyLive",
+  "version": "0.2.2",
+  "description": "Offical NearbyLive App for Linux and Mac OSX",
+  "main": "./index.js",
+  "license": "SynergyTechSolution",
+  "author": "Ali Mohammadlo <netcat.av@gmail.com>",
+  "homepage": "https://wnmlive.com",
+  "darwin": {
+    "bundleId": "com.synergytechsolution.nearbylive",
+    "appCategoryType": "public.app-category.web",
+    "copyright": "Copyright © SynergyTechSolution"
+  },
+  "linux": {
+    "genericName": "NearbyLive",
+    "categories": "GNOME;GTK;Web;Social",
+    "keywords": "nearby;",
+    "section": "web"
+  },
+  "win": {
+    "companyName": "SynergyTechSolution",
+    "copyright": "Copyright © SynergyTechSolution"
+  }
+}

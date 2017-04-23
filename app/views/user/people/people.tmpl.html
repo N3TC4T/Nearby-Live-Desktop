@@ -1,0 +1,43 @@
+<div class="ui top attached block header">
+  People
+</div>
+<div class="ui basic segment">
+  <div ng-class="{active: _PeopleCtrl.IsPeoplesLoading}" class="ui inverted dimmer">
+    <div class="ui text loader">Loading ...</div>
+  </div>
+  <perfect-scrollbar class="scroll-wrapper" style="height:calc(100% - 70px);">
+    <div class="ui divided items" style="padding-top: 5px;">
+      <div class="item" ng-repeat="people in _PeopleCtrl.Peoples">
+        <div class="ui tiny image">
+          <img ng-show="people.img" src="https://nearby-images.azureedge.net/image/{{people.img}}/128">
+          <img ng-show="!people.img" src="https://nearby-images.azureedge.net/image/1/128">
+        </div>
+        <div class="content">
+          <div class="header">
+            <a ng-click="$root.ProfileCard(people.id)" >{{people.name}}</a>
+            <span class="ui mini green label"  ng-show="$root.PeopleType == 'Online' ">online</span>
+            <span class="ui mini label"  ng-show="people.rank > 0 ">Ranked #{{people.rank}}</span>
+                        <span ng-show="people.ul" class="ui mini label"
+                              ng-class="{yellow:people.ul == 'gold' ,red : people.ul == 'vip admin' || people.ul == 'vip staff' || people.ul == 'staff' || people.ul == 'admin',blue:people.ul == 'vip'}">
+                                        {{people.ul}}
+                        </span>
+          </div>
+          <div class="meta">
+            <span ng-show="people.age > 0 ">{{people.age }} years old , </span>
+                        <span ng-show="people.gender != 1" ng-switch="people.gender">
+                            <span ng-switch-when="2"><i class="fitted man icon"></i> Male , </span>
+                            <span ng-switch-when="3"><i class="fitted woman icon"></i> Female , </span>
+                        </span>
+            <span><i class="fitted marker icon"></i> {{people.dis}} miles away</span>
+          </div>
+          <div class="description">{{people.interest}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="center" ng-show="$root.PeopleType != 'Following'">
+      <div ng-click="_PeopleCtrl.LoadMorePeople()"  ng-class="{'loading':_PeopleCtrl.IsLoadingMore}" class="ui mini basic icon button">
+        <i class="plus icon"></i> Load More ...
+      </div>
+    </div>
+  </perfect-scrollbar>
+</div>

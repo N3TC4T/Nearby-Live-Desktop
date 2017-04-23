@@ -1,0 +1,189 @@
+<script>
+    $('.menu .item').tab();
+</script>
+
+<div class="ui relaxed grid" style="padding-left: 0.5em;padding-right: 0.5em">
+    <div class="stretched row">
+        <div class="five wide column">
+            <div class="ui basic segment" style="padding: 1em 0.2em!important;">
+                <div class="ui card">
+                    <a class="image" href="#">
+                        <img ng-show="_ProfileCtrl.UserProfile.img" class="ui small image" src="https://nearby-images.azureedge.net/image/{{_ProfileCtrl.UserProfile.img}}/190">
+                        <img ng-show="!_ProfileCtrl.UserProfile.img" class="ui small image" src="https://nearby-images.azureedge.net/image/1/190">
+                    </a>
+                    <div class="content">
+                        <a class="header" href="#">{{_ProfileCtrl.UserProfile.name}}</a>
+                    </div>
+                    <div class="ui buttons bottom attached" >
+                        <div class="ui  button" ng-click="_ProfileCtrl.FollowUser(_ProfileCtrl.UserProfile)" ng-class="{loading:_ProfileCtrl.UserProfile.Isfollowing}" ng-show="!_ProfileCtrl.UserProfile.fav">
+                            <i class="add icon"></i>
+                            Follow
+                        </div>
+                        <div class="ui negative button" ng-click="_ProfileCtrl.UnFollowUser(_ProfileCtrl.UserProfile)" ng-class="{loading:_ProfileCtrl.UserProfile.IsUnfollowing}" ng-show="_ProfileCtrl.UserProfile.fav">
+                            <i class="minus icon"></i>
+                            Unfollow
+                        </div>
+                        <div class="ui button" ui-sref="Message({ pid: _ProfileCtrl.UserProfile.id , img:_ProfileCtrl.UserProfile.img , name:_ProfileCtrl.UserProfile.name})">
+                            <i class="comments icon"></i>
+                            Message
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="eleven wide column">
+            <div class="row">
+                <div class="ui grid">
+                    <div class="eight wide column">
+                        <dl>
+                            <dt>Distance</dt>
+                            <dd>{{_ProfileCtrl.UserProfile.dis}}  miles</dd>
+                            <dt>Last Online</dt>
+                            <dd>{{_ProfileCtrl.UserProfile.last | timeAgo}}</dd>
+                        </dl>
+                    </div>
+                    <div class="eight wide column">
+                        <dl>
+                            <dt>Age</dt>
+                            <dd>{{_ProfileCtrl.UserProfile.age}} years old</dd>
+                            <dt>Gender</dt>
+                            <dd ng-switch="_ProfileCtrl.UserProfile.gender">
+                                <span ng-switch-when="1">Unknown</span>
+                                <span ng-switch-when="2">Male</span>
+                                <span ng-switch-when="3">Female</span>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-show="_ProfileCtrl.UserProfile.interest || _ProfileCtrl.UserProfile.info">
+                <div class="ui list">
+                    <div class="item" ng-show="_ProfileCtrl.UserProfile.interest">
+                        <div class="ui horizontal label">Interests :</div>
+                        <span class="black"> {{_ProfileCtrl.UserProfile.interest}}</span>
+                    </div>
+                    <div class="item" ng-show="_ProfileCtrl.UserProfile.info">
+                        <div class="ui horizontal label">Additional Information :</div>
+                        <span class="black"> {{_ProfileCtrl.UserProfile.info}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-show="_ProfileCtrl.UserProfile.badges">
+                <div class="ui small horizontal list">
+                    <div class="item" ng-repeat="badge in _ProfileCtrl.UserProfile.badges" on-finish-render>
+                        <img class="ui mini image"  src="https://nearbydata.blob.core.windows.net/badges/{{badge.img}}.png" data-title="{{badge.name}}" data-content="{{badge.desc}}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="stretched row" style="margin-top: -2em!important;">
+        <div class="sixteen wide column">
+            <div class="ui pointing menu">
+                <a class="item disabled " data-tab="activit-">Activity <span class="ui label green">Soon</span> </a>
+                <a class="item active" data-tab="more">More</a>
+                <a class="item" data-tab="gifts" ng-show="_ProfileCtrl.UserProfile.gifts.length > 0">Gifts</a>
+                <a class="item" data-tab="photos" ng-show="_ProfileCtrl.UserProfile.photos.length > 0">Photos</a>
+                <a class="item" data-tab="followings" ng-show="_ProfileCtrl.UserProfile.favs.length >0">Following <div class="ui label">{{_ProfileCtrl.UserProfile.favs.length}}</div></a>
+                <a class="item" data-tab="followers" ng-show="_ProfileCtrl.UserProfile.favdby.length>0">Followers <div class="ui label">{{_ProfileCtrl.UserProfile.favdby.length}}</div></a>
+            </div>
+            <div class="ui tab" data-tab="activit">
+                <div class="ui segment">
+                    <p>Posts</p>
+                </div>
+            </div>
+            <div class="ui tab active" data-tab="more">
+                <div class="ui segment">
+                    <perfect-scrollbar class="scroll-wrapper" style="height:39%;">
+                        <dl class="pull-left" style="width: 300px;" ng-repeat="field in _ProfileCtrl.UserProfile.fields">
+                            <dt>{{field.k}}</dt>
+                            <dd>{{field.v}}</dd>
+                        </dl>
+                    </perfect-scrollbar>
+                </div>
+            </div>
+            <div class="ui tab" data-tab="gifts">
+                <div class="ui segment">
+                    <perfect-scrollbar class="scroll-wrapper" opts="{suppressScrollX:true}" style="height:39%;">
+                        <div class="ui six cards">
+                            <div class="card" ng-repeat="gift in _ProfileCtrl.UserProfile.gifts" on-finish-render>
+                                <div class="image">
+                                    <img class="ui mini image"  src="https://nearbydata.blob.core.windows.net/gifts/gift_{{gift.img}}.png" data-title="{{gift.name}}">
+                                </div>
+                                <div class="extra">
+                                    {{gift.giver}}
+                                </div>
+                            </div>
+                        </div>
+                    </perfect-scrollbar>
+                </div>
+            </div>
+            <div class="ui tab" data-tab="photos">
+                <div class="ui segment">
+                    <perfect-scrollbar class="scroll-wrapper" opts="{suppressScrollX:true}" style="height:39%;">
+                        <div class="ui small images">
+                            <a href="https://nearby-images.azureedge.net/image/{{photo}}" data-lightbox="user_photos" ng-repeat="photo in _ProfileCtrl.UserProfile.photos">
+                                <img src="https://nearby-images.azureedge.net/image/{{photo}}/128">
+                            </a>
+                        </div>
+                    </perfect-scrollbar>
+                </div>
+            </div>
+            <div class="ui tab" data-tab="followings">
+                <div class="ui segment">
+                    <perfect-scrollbar class="scroll-wrapper" opts="{suppressScrollX:true}" style="height:39%;">
+                        <div class="ui one column grid" ng-repeat="fav in _ProfileCtrl.UserProfile.favs">
+                            <div class="row">
+                                <div class="column">
+                                    <div class="ui list">
+                                        <div class="item">
+                                           <img ng-show="fav.img" class="ui mini image ava2" src="https://nearby-images.azureedge.net/image/{{fav.img}}/64">
+                                            <img ng-show="!fav.img" class="ui mini image ava2" src="https://nearby-images.azureedge.net/image/1/64">
+                                            <div class="content">
+                                                <a ng-click="$root.ProfileCard(fav.id)" class="header">{{fav.name}}</a>
+                                                {{fav.age }} years old -
+                                                <span ng-switch="fav.gender">
+                                                    <span ng-switch-when="1">Unspecified</span>
+                                                    <span ng-switch-when="2">Male</span>
+                                                    <span ng-switch-when="3">Female</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </perfect-scrollbar>
+                </div>
+            </div>
+            <div class="ui tab" data-tab="followers">
+                <div class="ui segment">
+                    <perfect-scrollbar class="scroll-wrapper" opts="{suppressScrollX:true}" style="height:39%;">
+                        <div class="ui one column grid" ng-repeat="favby in _ProfileCtrl.UserProfile.favdby">
+                            <div class="row">
+                                <div class="column">
+                                    <div class="ui list">
+                                        <div class="item">
+                                            <img ng-show="favby.img" class="ui mini image ava2" src="https://nearby-images.azureedge.net/image/{{favby.img}}/64">
+                                            <img ng-show="!favby.img" class="ui mini image ava2" src="https://nearby-images.azureedge.net/image/1/64">
+                                            <div class="content">
+                                                <a ng-click="$root.ProfileCard(favby.id)" class="header">{{favby.name}}</a>
+                                                {{favby.age }} years old - <span ng-switch="favby.gender">
+                                                    <span ng-switch-when="1">Unspecified</span>
+                                                    <span ng-switch-when="2">Male</span>
+                                                    <span ng-switch-when="3">Female</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </perfect-scrollbar>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

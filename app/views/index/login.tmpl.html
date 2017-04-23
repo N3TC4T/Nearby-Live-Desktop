@@ -1,0 +1,127 @@
+<head>
+    <style type="text/css">
+        .bg-p {
+            background: url(images/bg.jpg) no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+        .ui.grid {
+            height: 100%;
+            margin-top: 0px;!important;
+        }
+        .column {
+            max-width: 450px;
+            margin-top: -200px;
+        }
+        .form-group{
+            text-align: left;!important;
+        }
+    </style>
+    <script>
+        const remote = require('electron').remote;
+
+        document.getElementById("min-btn").addEventListener("click", function (e) {
+            var window = remote.getCurrentWindow();
+            window.minimize();
+        });
+
+        document.getElementById("max-btn").addEventListener("click", function (e) {
+            var window = remote.getCurrentWindow();
+            if (!window.isMaximized()) {
+                window.maximize();
+            } else {
+                window.unmaximize();
+            }
+        });
+
+        document.getElementById("close-btn").addEventListener("click", function (e) {
+            var window = remote.getCurrentWindow();
+            window.hide();
+        });
+
+    </script>
+</head>
+<body>
+<div class="window">
+    <header style="-webkit-app-region:drag;" class="toolbar toolbar-header">
+        <span class="window-buttons">
+            <span id="close-btn" class="entypo-icon icon-record" style="color:#fc605b"></span>
+            <span id="min-btn" class="entypo-icon icon-record" style="color:#fdbc40"></span>
+            <span id="max-btn" class="entypo-icon icon-record" style="color:#34c84a"></span>
+        </span>
+        <h1 class="title">{{ pageTitle }}</h1>
+    </header>
+    <div class="ui grid middle aligned center aligned  bg-p">
+        <div class="column">
+            <h2 class="ui blue center aligned header">
+                <div class="content">
+                    Nearby
+                    <div class="sub header">
+                        Log-in to your account
+                    </div>
+                </div>
+            </h2>
+
+            <div class="ui stacked segment" id="login">
+                <form ng-init="_AccountCtrl.LoginForm = {}" ng-submit="_AccountCtrl.Login()">
+                    <div class="form-group">
+                        <label>Email address</label>
+                        <input ng-model="_AccountCtrl.LoginForm.email" type="text" name="email" class="form-control" placeholder="E-mail address">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input ng-model="_AccountCtrl.LoginForm.password" type="password"  name="password" class="form-control" placeholder="Password">
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" ng-class="{'loading':_AccountCtrl.IsLoggedin}" class="ui fluid large primary submit button">Login</button>
+                    </div>
+                </form>
+            </div>
+
+            <div  ng-show="_AccountCtrl.message" class="ui icon message">
+                <i class="warning icon"></i>
+                <div class="content">
+                    <p>{{_AccountCtrl.message}}</p>
+                </div>
+            </div>
+            <div class="ui message">
+                Forget your password ? <a id="recover_link">Recovery</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Forget Password modal-->
+<div class="ui small forget_password modal">
+    <div class="header">Recovery Password <i onclick="$('.ui.small.forget_password.modal').modal('hide');" class="close link icon pull-right"></i></div>
+    <div class="content">
+        <p>Give us your email address and we will send you a link to reset your password</p>
+        <form ng-init="_AccountCtrl.RecoveryForm = {}">
+            <div class="form-group">
+                <label>Email address</label>
+                <input ng-model="_AccountCtrl.RecoveryForm.email" type="text" name="email" class="form-control" placeholder="E-mail address">
+            </div>
+        </form>
+    </div>
+    <div class="actions">
+        <div class="ui black deny button">
+            Cancel
+        </div>
+        <div ng-click="_AccountCtrl.Recover_Password()" ng-class="{'loading':_AccountCtrl.IsRecovering}" class="ui right primary labeled icon button">
+            Recovery My Password
+            <i class="checkmark icon"></i>
+        </div>
+    </div>
+</div>
+<!--Forget Password modal-->
+
+<script>
+    $('#recover_link').click(function(){
+        $('.ui.small.forget_password.modal').modal({dimmerSettings:{opacity:0.5}}).modal('show');
+    });
+</script>
+</body>

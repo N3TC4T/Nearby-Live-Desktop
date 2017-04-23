@@ -1,0 +1,570 @@
+@import "vendor/photon";
+@import "vendor/semantic";
+@import "vendor/lightbox";
+
+
+/*--------------------
+Other Custom Css
+--------------------*/
+
+.center{
+  text-align: center;
+}
+
+.input-file {
+  display: none;
+}
+
+.black{
+  color: black;
+}
+
+.pane{
+  overflow: hidden;
+}
+
+dl {
+	margin-bottom: 20px;
+    color: black;
+}
+dt {
+	font-weight: bold;
+    color: black;
+}
+dd {
+	margin-left: 0;
+      color: black;
+}
+
+
+
+.btn > .ui.label {
+  padding: 0.4em 0.6em !important;
+}
+
+
+.window-buttons {
+  float: left;
+  margin-left: 5px;
+  font-size: 17px;
+  -webkit-app-region: no-drag;
+}
+
+.ava2 {
+  display: block;
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  border-radius: 100%;
+  width: 250px;
+  height: 250px;
+  background: #fff;
+  -webkit-box-shadow: -1px 3px 3px rgba(0,0,0,0.3);
+  -moz-box-shadow: -1px 3px 3px rgba(0,0,0,0.3);
+  box-shadow: -1px 3px 3px rgba(0,0,0,0.3);
+}
+
+h1.title {
+  font-size: 13px;
+  margin-top: 4px !important;
+}
+
+.toolbar-actions.center {
+  text-align: center ;
+}
+
+
+.scroll-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.bg-div{
+  background: url(/images/main-bg.jpg) no-repeat center center fixed!important;
+  height: 100%;
+}
+
+
+img.ui.bordered.image {
+  border-color: #bdbdbc;
+}
+
+.ui.info.message {
+
+  color:#276F86!important; ;
+}
+
+
+/*--------------------
+Feed & Comments Custom
+--------------------*/
+
+.ui.feed > .event > .content .date {
+  font-size: 12px;
+}
+
+.ui.feed > .event > .content .meta {
+  display: flex!important;
+  margin: 1.5em 0em 0em!important;
+}
+
+.ui.comments .comment .avatar{
+  height: 2.5em!important;
+}
+
+.ui.feed > .event > .label + .content {
+    margin: 0em 0em 0.35714286em 1.14285714em;
+}
+
+.ui.feed > .event > .content .date {
+  margin: 0!important;
+}
+
+
+.ui.feed > .event > .content .comments {
+  margin: 0;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.ui.feed > .event {
+  margin: 10px 0 25px 0;
+  border-collapse: separate;
+  border: solid 1px #ebebeb;
+  padding: 10px 10px 10px 10px!important;
+  width: calc(100% - 25px);
+  border: none;
+  border-radius: 30px 10px 10px 10px;
+  background-color: #f5f5f4;
+}
+
+.ui.feed > .event.featured {
+  border: 1px Solid #f90 !important;
+  background-color: #fc6 !important;
+}
+
+.ui.accordion .title:not(.ui) {
+  padding: 0.5em 0em 2em;
+}
+/*--------------------
+Ui-view Animation
+--------------------*/
+
+.animation {
+  -webkit-transition: 1s;
+}
+
+.animation.ng-enter {
+  opacity: 0;
+}
+
+.animation.ng-leave {
+  opacity: 1;
+}
+
+.animation.ng-enter.ng-enter-active {
+  opacity: 1;
+}
+
+.animation.ng-leave.ng-leave-active {
+  opacity: 0;
+}
+
+[ui-view].ng-enter, [ui-view].ng-leave {
+  position: absolute;
+  left: 0;
+  right: 0;
+  -webkit-transition:all .5s ease-in-out;
+  -moz-transition:all .5s ease-in-out;
+  -o-transition:all .5s ease-in-out;
+  transition:all .5s ease-in-out;
+}
+
+[ui-view].ng-enter {
+  opacity: 0;
+  -webkit-transform:scale3d(0.5, 0.5, 0.5);
+  -moz-transform:scale3d(0.5, 0.5, 0.5);
+  transform:scale3d(0.5, 0.5, 0.5);
+}
+
+[ui-view].ng-enter-active {
+  opacity: 1;
+  -webkit-transform:scale3d(1, 1, 1);
+  -moz-transform:scale3d(1, 1, 1);
+  transform:scale3d(1, 1, 1);
+}
+
+[ui-view].ng-leave {
+  opacity: 1;
+  -webkit-transform:translate3d(0, 0, 0);
+  -moz-transform:translate3d(0, 0, 0);
+  transform:translate3d(0, 0, 0);
+}
+
+[ui-view].ng-leave-active {
+  opacity: 0;
+  -webkit-transform:translate3d(100px, 0, 0);
+  -moz-transform:translate3d(100px, 0, 0);
+  transform:translate3d(100px, 0, 0);
+}
+
+
+/*--------------------
+Chat
+--------------------*/
+/* User Bar */
+
+.user-bar {
+  height: 35px;
+  padding: 0 0px;
+  font-size: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.user-bar:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.user-bar div {
+  float: left;
+  transform: translateY(-50%);
+  position: relative;
+  top: 50%;
+}
+
+.user-bar .actions {
+  float: right;
+  margin: 0 !important;
+}
+
+.user-bar .actions i{
+  margin-right: 0 !important;
+}
+
+.user-bar .avatar {
+  margin: 0 0 0 5px;
+  width: 36px;
+  height: 36px;
+}
+
+.user-bar .avatar img {
+  border-radius: 50%;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
+  display: block;
+  width: 100%;
+}
+
+.user-bar .name {
+  font-size: 17px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  letter-spacing: 0.3px;
+  margin: 0 0 0 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 200px;
+}
+
+.user-bar .status {
+  display: block;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+/* Chat Section */
+
+.clearfix {
+  display: table;
+  overflow: hidden;
+}
+.clearfix:before {
+  content: " ";
+  display: block;
+}
+
+.font-size-small {
+  font-size: 0.7rem;
+}
+
+.chat-wrapper {
+  width: 100%;
+  display: table;
+  padding-right: 20px!important;
+}
+.chat-wrapper:before {
+  content: " ";
+  display: block;
+}
+.chat-wrapper .chat-content {
+  background-color: #fff;
+}
+.chat-wrapper .chat-image {
+  float: left;
+  border-radius: 50%;
+}
+.chat-wrapper .chat-image.chat-image-default {
+  width: 60px;
+  height: 60px;
+}
+.chat-wrapper .chat-message {
+  margin-bottom: 20px;
+  width: 100%;
+  display: table;
+  overflow: hidden;
+}
+.chat-wrapper .chat-message:before {
+  content: " ";
+  display: block;
+}
+.chat-wrapper .chat-message:last-of-type {
+  margin-bottom: 0;
+}
+.chat-wrapper .chat-message .chat-message-wrapper {
+  max-width: 70%;
+  display: table;
+  margin: 0 20px;
+  padding-top: 10px;
+  position: relative;
+}
+.chat-wrapper .chat-message .chat-message-wrapper:before {
+  content: " ";
+  display: block;
+  width: 0;
+  height: 0;
+  border: 12px solid transparent;
+  top: 20px;
+  position: absolute;
+  z-index: 2;
+}
+.chat-wrapper .chat-message .chat-message-wrapper p {
+  padding: 10px 20px;
+  border-top: 1px solid;
+}
+.chat-wrapper .chat-message-recipient .chat-message-wrapper p {
+  color: #000000;
+}
+.chat-wrapper .chat-message-sender .chat-message-wrapper p {
+  color: #ffffff;
+}
+.chat-wrapper .chat-message .chat-message-wrapper p:first-of-type {
+  border-top: 0 !important;
+}
+.chat-wrapper .chat-message.chat-message-recipient .chat-message-wrapper,
+.chat-wrapper .chat-message.chat-message-recipient .chat-message-content {
+  float: left;
+}
+.chat-wrapper .chat-message.chat-message-recipient .chat-message-wrapper:before {
+  left: -20px;
+  border-right-color: #e5e5ea;
+}
+.chat-wrapper .chat-message.chat-message-recipient p {
+  background-color: #e5e5ea;
+  border-top-color: #c0c0c5;
+  overflow: hidden;
+}
+.chat-wrapper .chat-message.chat-message-sender .chat-message-wrapper,
+.chat-wrapper .chat-message.chat-message-sender .chat-message-content {
+  float: right;
+}
+.chat-wrapper .chat-message.chat-message-sender .chat-message-wrapper:before {
+  right: -20px;
+  border-left-color: #1289fe;
+}
+.chat-wrapper .chat-message.chat-message-sender p {
+  background: #1289fe;
+  border-top-color: #1265ca;
+  overflow: hidden;
+}
+.chat-wrapper .chat-message.chat-message-sender img {
+  float: right;
+}
+.chat-wrapper .chat-message .chat-message-content {
+  display: table;
+  overflow: hidden;
+  border-radius: 4px;
+}
+.chat-wrapper .chat-message .chat-message-content:before {
+  content: " ";
+  display: block;
+}
+.chat-wrapper .chat-message .chat-details {
+  clear: both;
+  width: 100%;
+  display: table;
+  overflow: hidden;
+}
+.chat-wrapper .chat-message .chat-details:before {
+  content: " ";
+  display: block;
+}
+.chat-wrapper .chat-message .chat-details span {
+  margin-right: 4px;
+  color: #bbb;
+}
+
+.red{
+  color: #dd0000 !important;
+}
+
+.green{
+  color: #00AA00!important;
+}
+
+.sky{
+  color: #049fde!important;
+}
+
+.gray{
+  color: #767676;
+}
+
+
+
+/*--------------------
+Notifications
+--------------------*/
+
+ul.notification-bar {
+  list-style: none;
+  padding: 60px 10px;
+  margin: 0;
+  position: relative;
+  width: 98%;
+  z-index: 2;
+}
+
+.notification-bar li:not(:first-child) {
+  margin-top: 60px;
+}
+.notification-bar li div {
+  margin-left: 50px;
+  margin-top: -40px;
+  border: 1px solid #c7c6c2;
+  padding: 10px;
+  background-color: #eeede8;
+  border-radius: 3px;
+  box-shadow: 1px 1px 2px #dedcd4;
+}
+
+.notification-bar li div .date {
+  font-size: 11px;
+  color: #60605f;
+}
+
+.notification-bar li div .txt {
+  font-size: 14px;
+  color: #000000;
+}
+
+.notification-bar li i {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  vertical-align: middle;
+  display: table-cell;
+  border: 2px solid #008dcb;
+  border-radius: 100%;
+  background-color: white;
+  color: #008dcb;
+}
+.notification-bar li.unread i {
+	background-color: #008dcb;
+	color: #fff!important;
+}
+.notification-bar li.unread div {
+	border-color: #008dcb;
+	background-color: #008dcb;
+	color: #fff!important;
+}
+.notification-bar li i:after {
+  content: '';
+  width: 40px;
+  height: 2px;
+  position: absolute;
+  background-color: #ddd;
+  margin-top: 8px;
+  z-index: -1;
+}
+.notification-bar:after {
+  content: '';
+  width: 2px;
+  height: 100%;
+  background-color: #deddd5;
+  position: absolute;
+  top: 0;
+  left: 28px;
+  z-index: -1;
+}
+
+
+/*--------------------
+Confirm
+--------------------*/
+
+.confirm {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 80%;
+  min-width: 280px;
+  max-width: 500px;
+  height: auto;
+  background: #E2E2E2;
+  border-radius: 10px;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid white;
+  -webkit-animation: fade 1s ease 1 forwards;
+          animation: fade 1s ease 1 forwards;
+}
+.confirm h1 {
+  text-align: center;
+  font-size: 1.2rem;
+  margin: 1.5rem 1rem 0.5rem;
+  color: black;
+}
+.confirm p {
+  text-align: center;
+  font-size: 1rem;
+  margin: 0 2rem 4.5rem;
+  color: black;
+}
+.confirm li{
+  margin: 0 2rem 0rem;
+  color: black;
+}
+.confirm button {
+  background: transparent;
+  border: none;
+  color: #1678E5;
+  height: 3rem;
+  font-size: 1rem;
+  width: 50%;
+  position: absolute;
+  bottom: 0;
+  cursor: pointer;
+}
+.confirm button:nth-of-type(1) {
+  border-top: 1px solid #B4B4B4;
+  border-right: 1px solid #B4B4B4;
+  left: 0;
+  border-radius: 0 0 0 10px;
+}
+.confirm button:nth-of-type(2) {
+  border-top: 1px solid #B4B4B4;
+  right: 0;
+  border-radius: 0 0 10px 0;
+}
+.confirm button:focus,
+.confirm button:hover {
+  font-weight: bold;
+  background: #EFEFEF;
+}
+.confirm button:active {
+  background: #D6D6D6;
+}
